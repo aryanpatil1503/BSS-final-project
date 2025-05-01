@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  MODERATOR
+}
+
+// Removed TargetType enum (using explicit relations instead)
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  hashedPassword String?
+  avatar    String?
+  role      Role      @default(USER)
+  threads   Thread[]
+  comments  Comment[]
+  votes     Vote[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  accounts  Account[]
+  sessions  Session[]
+}
+
+model Thread {
+  id        String    @id @default(cuid())
+  title     String
+  content   String
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String
+  comments  Comment[]
+  votes     Vote[] @relation("ThreadVotes")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+}
+
+model Comment {
+  id        String    @id @default(cuid())
+  content   String
+  thread    Thread    @relation(fields: [threadId], references: [id])
+  threadId  String
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime  @default(now())
+  parent    Comment?  @relation("Replies", fields: [parentId], references: [id])
+  parentId  String?
+  replies   Comment[] @relation("Replies")
+  votes     Vote[] @relation("CommentVotes")
+  updatedAt DateTime  @default(now()) @updatedAt
+}
+
+model Vote {
+  id        String    @id @default(cuid())
+  value     Int
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  thread    Thread?   @relation("ThreadVotes", fields: [threadId], references: [id])
+  threadId  String?
+  comment   Comment?  @relation("CommentVotes", fields: [commentId], references: [id])
+  commentId String?
+  createdAt DateTime  @default(now())
+
+  @@unique([userId, threadId], map: "unique_user_thread_vote")
+  @@unique([userId, commentId], map: "unique_user_comment_vote")
+}
+
+// NextAuth models
+model Account {
+  id                   String  @id @default(cuid())
+  userId               String
+  type                 String
+  provider             String
+  providerAccountId    String
+  refresh_token        String?
+  access_token         String?
+  expires_at           Int?
+  token_type           String?
+  scope                String?
+  id_token             String?
+  session_state        String?
+  oauth_token_secret   String?
+  oauth_token          String?
+  user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}

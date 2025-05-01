@@ -34,3 +34,24 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Next Steps
+
+1. Install & init Prisma
+   ```bash
+   npm install prisma @prisma/client
+   npx prisma init
+   ```
+2. Define your first model in `prisma/schema.prisma` (e.g. `User` with `id`, `email`, `name`).
+3. Run initial migration & generate client:
+   ```bash
+   npx prisma migrate dev --name init
+   npx prisma generate
+   ```
+4. Create `lib/prisma.ts` exporting a cached `PrismaClient`.
+5. Write a GET API route at `app/api/users/route.ts` using `prisma.user.findMany()`.
+6. Test the endpoint (curl or browser `http://localhost:3000/api/users`).
+7. Build a front-end page at `app/users/page.tsx` to fetch & display users.
+8. Add a “Create User” form to POST to `/api/users`.
+9. Implement POST handler with `prisma.user.create` and refresh the list.
+10. (Optional) Repeat for update/delete operations.
