@@ -57,3 +57,30 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 8. Add a “Create User” form to POST to `/api/users`.
 9. Implement POST handler with `prisma.user.create` and refresh the list.
 10. (Optional) Repeat for update/delete operations.
+
+## Project Status
+
+### Done
+- **Prisma & DB**
+  - Added `hashedPassword?` to User model
+  - Ran `prisma migrate dev` and regenerated the client
+- **Authentication**
+  - Configured NextAuth with `CredentialsProvider` + bcrypt
+  - Built `/api/auth/signup` to create users with hashed passwords
+  - Updated NextAuth route to select and validate `hashedPassword`
+- **UI/UX**
+  - Split “Sign In” and “Sign Up” into separate pages (`/signin`, `/signup`)
+  - Sign-in page collects email & password; Sign-up page adds name, password confirmation, toasts
+  - Updated Header links and dark-mode styling for Header/Card
+  - Wrapped app in `SessionProvider` and integrated `react-hot-toast`
+- **Git & Deploy**
+  - Resolved README merge conflict
+  - Pushed codebase to GitHub at https://github.com/aryanpatil1503/BSS-final-project
+
+### Remaining
+- **Environment & Secrets**: Set `DATABASE_URL` and `NEXTAUTH_SECRET` in `.env.local`
+- **UI Polish**: Enhance dark-mode styling and add “Sign Out” with user info
+- **Route Protection**: Protect any pages requiring authentication (redirect unauthenticated users)
+- **Validation & UX**: Implement password-strength checks, improved error messages, loading states
+- **Testing**: Add unit/integration tests for auth endpoints and pages
+- **Deployment Config**: Finalize Vercel (or other) env vars and CI/CD settings

@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { useTheme } from 'next-themes'
@@ -8,6 +8,9 @@ import { useTheme } from 'next-themes'
 export default function Header() {
   const { data: session, status } = useSession()
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   return (
     <header className="bg-white dark:bg-gray-800 dark:text-gray-100 transition-colors p-4 flex justify-between items-center">
       <nav className="flex items-center space-x-6">
@@ -40,12 +43,14 @@ export default function Header() {
           </Link>
         </div>
       )}
-      <button
-        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-        className="ml-4 p-1 bg-gray-200 dark:bg-gray-700 rounded transition-colors"
-      >
-        {theme === 'light' ? '🌙' : '☀️'}
-      </button>
+      {mounted && (
+        <button
+          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          className="ml-4 p-1 bg-gray-200 dark:bg-gray-700 rounded transition-colors"
+        >
+          {theme === 'light' ? '🌙' : '☀️'}
+        </button>
+      )}
     </header>
   )
 }

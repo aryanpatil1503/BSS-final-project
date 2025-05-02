@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from '@/components/Providers';
 import Header from '@/components/Header';
-import { ThemeProvider } from 'next-themes';
+// Removed ThemeProvider import (dark-mode temporarily disabled)
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,17 +26,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ThemeProvider attribute="class">
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <Providers>
-            <Header />
-            {children}
-          </Providers>
-        </body>
-      </html>
-    </ThemeProvider>
+    <html lang="en" className="light" style={{ colorScheme: 'light' }}>
+      <head />
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
+      </body>
+    </html>
   );
 }

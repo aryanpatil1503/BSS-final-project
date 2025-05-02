@@ -1,8 +1,15 @@
 import CreateThreadForm from '@/components/CreateThreadForm';
 import ThreadList, { Thread } from '@/components/ThreadList';
 import { prisma } from '@/lib/prisma';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../api/auth/[...nextauth]/route';
+import { redirect } from 'next/navigation';
 
 export default async function ThreadsPage() {
+  // Protect page: redirect if not authenticated
+  const session = await getServerSession(authOptions);
+  if (!session) redirect('/signin');
+
   // Fetch threads and users for the form
   const [threads, users] = await Promise.all([
     prisma.thread.findMany({
@@ -21,7 +28,7 @@ export default async function ThreadsPage() {
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">Start a New Thread</h2>
-        <CreateThreadForm users={users} />
+        <CreateThreadForm />
       </section>
 
       <section>
