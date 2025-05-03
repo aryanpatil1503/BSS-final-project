@@ -33,7 +33,9 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
-          {children}
+          <div className="animate__animated animate__fadeIn animate__faster">
+            {children}
+          </div>
         </Providers>
       </body>
     </html>

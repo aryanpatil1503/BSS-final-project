@@ -30,7 +30,7 @@ export default function CommentList({ comments, users, threadId }: Props) {
   return (
     <ul className="space-y-6">
       {comments.map((comment) => (
-        <li key={comment.id} className="border p-4 rounded">
+        <li key={comment.id} className="border p-4 rounded animate__animated animate__fadeInUp animate__faster transition-colors hover:bg-gray-100 dark:hover:bg-gray-700">
           <div className="mt-2">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {comment.content}
@@ -40,7 +40,7 @@ export default function CommentList({ comments, users, threadId }: Props) {
             by {comment.author.name}
           </div>
           <VoteSection commentId={comment.id} users={users} />
-          <CommentActions commentId={comment.id} initialContent={comment.content} authorId={comment.author.id} users={users} />
+          <CommentActions commentId={comment.id} initialContent={comment.content} />
           <button
             onClick={() => setOpenReplies(prev => ({ ...prev, [comment.id]: !prev[comment.id] }))}
             className="text-blue-600 text-sm mt-2"
@@ -49,13 +49,13 @@ export default function CommentList({ comments, users, threadId }: Props) {
           </button>
           {openReplies[comment.id] && (
             <div className="mt-2 ml-4">
-              <CreateCommentForm threadId={threadId} users={users} parentId={comment.id} />
+              <CreateCommentForm threadId={threadId} parentId={comment.id} />
             </div>
           )}
           {comment.replies && comment.replies.length > 0 && (
             <ul className="mt-4 space-y-4 pl-4 border-l">
               {comment.replies.map((reply) => (
-                <li key={reply.id} className="border p-3 rounded">
+                <li key={reply.id} className="border p-3 rounded animate__animated animate__fadeInUp animate__faster transition-colors hover:bg-gray-100 dark:hover:bg-gray-700">
                   <div className="mt-2">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
                       {reply.content}
@@ -65,7 +65,7 @@ export default function CommentList({ comments, users, threadId }: Props) {
                     by {reply.author.name}
                   </div>
                   <VoteSection commentId={reply.id} users={users} />
-                  <CommentActions commentId={reply.id} initialContent={reply.content} authorId={reply.author.id} users={users} />
+                  <CommentActions commentId={reply.id} initialContent={reply.content} />
                   <button
                     onClick={() => setOpenReplies(prev => ({ ...prev, [reply.id]: !prev[reply.id] }))}
                     className="text-blue-600 text-sm mt-1"
@@ -74,7 +74,7 @@ export default function CommentList({ comments, users, threadId }: Props) {
                   </button>
                   {openReplies[reply.id] && (
                     <div className="mt-2 ml-6">
-                      <CreateCommentForm threadId={threadId} users={users} parentId={reply.id} />
+                      <CreateCommentForm threadId={threadId} parentId={reply.id} />
                     </div>
                   )}
                 </li>
