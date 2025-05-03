@@ -21,6 +21,7 @@ export default function CommentActions({ commentId, initialContent }: Props) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: contentInput }),
     });
+    console.log(`[CommentActions] PATCH commentId=${commentId} status=${res.status} ok=${res.ok}`);
     if (res.ok) {
       startTransition(() => {
         router.refresh();
@@ -32,6 +33,7 @@ export default function CommentActions({ commentId, initialContent }: Props) {
   const handleDelete = async () => {
     if (!confirm('Delete this comment?')) return;
     const res = await fetch(`/api/comments/${commentId}`, { method: 'DELETE' });
+    console.log(`[CommentActions] DELETE commentId=${commentId} status=${res.status} ok=${res.ok}`);
     if (res.ok) {
       startTransition(() => router.refresh());
     }

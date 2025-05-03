@@ -37,6 +37,11 @@ export default async function ThreadPage({ params }: { params: { id: string } })
 
   const users = await prisma.user.findMany({ select: { id: true, name: true } });
 
+  // Fetch sentiment classification
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+  const sentimentRes = await fetch(`${baseUrl}/api/threads/${id}/sentiment`, { cache: 'no-store' });
+  const { sentiment } = await sentimentRes.json();
+
   return (
     <main className="max-w-3xl mx-auto p-6 space-y-6">
       <div className="border-b pb-4">
@@ -49,12 +54,13 @@ export default async function ThreadPage({ params }: { params: { id: string } })
             {thread.content}
           </ReactMarkdown>
           <ThreadActions threadId={id} title={thread.title} content={thread.content} authorId={thread.author.id} users={users} />
+          <p className="mt-2 text-sm font-medium">Sentiment: {sentiment}</p>
         </div>
       </div>
 
       <section>
         <h2 className="text-xl font-semibold mb-2">Add a Comment</h2>
-        <CreateCommentForm threadId={id} users={users} />
+        <CreateCommentForm threadId={id} />
       </section>
 
       <section>
