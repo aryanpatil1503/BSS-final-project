@@ -4,12 +4,12 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
 interface Params {
-  params: { threadId: string };
+  params: Promise<{ threadId: string }>;
 }
 
 // GET /api/threads/[threadId]/comments
 export async function GET(request: Request, { params }: Params) {
-  const { threadId } = params;
+  const { threadId } = await params;
   const comments = await prisma.comment.findMany({
     where: { threadId, parentId: null },
     orderBy: { createdAt: "asc" },
@@ -39,10 +39,11 @@ export async function POST(request: Request, { params }: Params) {
     if (!content) {
       return NextResponse.json({ error: "content is required" }, { status: 400 });
     }
+    const { threadId } = await params;
     const comment = await prisma.comment.create({
       data: {
         content,
-        threadId: params.threadId,
+        threadId,
         authorId: session.user.id,
         parentId: parentId ?? null,
       },
