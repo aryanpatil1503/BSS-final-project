@@ -1,18 +1,19 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-
-interface Params {
-  params: { commentId: string };
-}
+import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
 
 // POST /api/comments/[commentId]/votes
-export async function POST(request: Request, { params }: Params) {
+export async function POST(
+  request: Request,
+  { params }: { params: { commentId: string } }
+) {
   try {
+    const { commentId } = params;
     const { userId, value } = await request.json();
     if (!userId || ![1, -1].includes(value)) {
       return NextResponse.json({ error: "userId and value (1 or -1) required" }, { status: 400 });
     }
-    const commentId = params.commentId;
     // upsert vote
     const existing = await prisma.vote.findFirst({ where: { userId, commentId } });
     if (existing) {
@@ -30,9 +31,12 @@ export async function POST(request: Request, { params }: Params) {
 }
 
 // GET /api/comments/[commentId]/votes
-export async function GET(request: Request, { params }: Params) {
+export async function GET(
+  request: Request,
+  { params }: { params: { commentId: string } }
+) {
   try {
-    const commentId = params.commentId;
+    const { commentId } = params;
     const up = await prisma.vote.count({ where: { commentId, value: 1 } });
     const down = await prisma.vote.count({ where: { commentId, value: -1 } });
     return NextResponse.json({ votes: up - down });
