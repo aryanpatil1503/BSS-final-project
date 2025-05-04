@@ -2,7 +2,7 @@ import CreateThreadForm from '@/components/CreateThreadForm';
 import ThreadList, { Thread } from '@/components/ThreadList';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
 export default async function ThreadsPage({ searchParams }: { searchParams: { search?: string | string[] } }) {

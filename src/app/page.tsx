@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from './api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 
 // Removed next/image to handle unpredictable remote image endpoints
 

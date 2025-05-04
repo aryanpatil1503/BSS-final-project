@@ -38,7 +38,7 @@ export default async function ThreadPage({ params }: { params: { id: string } })
   const users = await prisma.user.findMany({ select: { id: true, name: true } });
 
   // Fetch sentiment classification
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+  const baseUrl = process.env.NEXTAUTH_URL!;
   const sentimentRes = await fetch(`${baseUrl}/api/threads/${id}/sentiment`, { cache: 'no-store' });
   const { sentiment } = await sentimentRes.json();
 

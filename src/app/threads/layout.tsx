@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import React from 'react';
 
 export default async function ThreadsLayout({ children }: { children: React.ReactNode }) {
