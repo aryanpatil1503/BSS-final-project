@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-export default async function ThreadPage({ params }: { params: { id: string } }) {
+export default async function ThreadPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const thread = await prisma.thread.findUnique({
     where: { id },
