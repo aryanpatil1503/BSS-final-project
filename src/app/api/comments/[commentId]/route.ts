@@ -4,12 +4,13 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 
 // PATCH /api/comments/[commentId]
-export async function PATCH(request: Request, { params }: { params: { commentId: string } }) {
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ commentId: string }> }
+) {
   const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-  const commentId = params.commentId;
+  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const { commentId } = await params;
   try {
     const { content } = await request.json();
     if (!content) {
@@ -31,12 +32,13 @@ export async function PATCH(request: Request, { params }: { params: { commentId:
 }
 
 // DELETE /api/comments/[commentId]
-export async function DELETE(request: Request, { params }: { params: { commentId: string } }) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ commentId: string }> }
+) {
   const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-  const commentId = params.commentId;
+  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const { commentId } = await params;
   try {
     const existing = await prisma.comment.findUnique({ where: { id: commentId } });
     if (!existing) {
