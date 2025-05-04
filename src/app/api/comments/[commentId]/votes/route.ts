@@ -4,10 +4,10 @@ import { prisma } from '@/lib/prisma';
 // POST /api/comments/[commentId]/votes
 export async function POST(
   request: Request,
-  { params }: { params: { commentId: string } }
+  { params }: { params: Promise<{ commentId: string }> }
 ) {
   try {
-    const { commentId } = params;
+    const { commentId } = await params;
     const { userId, value } = await request.json();
     if (!userId || ![1, -1].includes(value)) {
       return NextResponse.json({ error: "userId and value (1 or -1) required" }, { status: 400 });
@@ -31,10 +31,10 @@ export async function POST(
 // GET /api/comments/[commentId]/votes
 export async function GET(
   request: Request,
-  { params }: { params: { commentId: string } }
+  { params }: { params: Promise<{ commentId: string }> }
 ) {
   try {
-    const { commentId } = params;
+    const { commentId } = await params;
     const up = await prisma.vote.count({ where: { commentId, value: 1 } });
     const down = await prisma.vote.count({ where: { commentId, value: -1 } });
     return NextResponse.json({ votes: up - down });
