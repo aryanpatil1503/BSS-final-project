@@ -23,9 +23,8 @@ interface Props {
 }
 
 export default function CommentList({ comments, users, threadId }: Props) {
-  if (!comments || comments.length === 0) return <p>No comments yet.</p>;
-
   const [openReplies, setOpenReplies] = useState<Record<string, boolean>>({});
+  if (!comments || comments.length === 0) return <p>No comments yet.</p>;
 
   return (
     <ul className="space-y-6">

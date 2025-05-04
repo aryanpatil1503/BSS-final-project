@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
 interface User {
   id: string;
@@ -16,7 +15,6 @@ interface Props {
 export default function VoteSection({ threadId, commentId, users }: Props) {
   const [count, setCount] = useState(0);
   const [userId, setUserId] = useState(users[0]?.id || '');
-  const router = useRouter();
   const endpoint = threadId
     ? `/api/threads/${threadId}/votes`
     : `/api/comments/${commentId}/votes`;

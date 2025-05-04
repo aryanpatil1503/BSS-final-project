@@ -3,7 +3,7 @@ import { PrismaClient } from "@/generated/prisma";
 
 declare global {
   // allow global prisma variable in development
-  var prisma: PrismaClient | undefined;
+  let prisma: PrismaClient | undefined;
 }
 
 export const prisma =
