@@ -3,11 +3,18 @@ import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 
+interface Review {
+  id: string;
+  title: string;
+  content: string;
+  author: { name: string };
+}
+
 // Removed next/image to handle unpredictable remote image endpoints
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
-  const reviews = await prisma.thread.findMany({
+  const reviews: Review[] = await prisma.thread.findMany({
     orderBy: { createdAt: 'desc' },
     take: 6,
     include: { author: { select: { name: true } } },
@@ -45,7 +52,7 @@ export default async function Home() {
         </form>
         <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Latest Reviews</h2>
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {reviews.map(review => (
+          {reviews.map((review: Review) => (
             <Link key={review.id} href={`/threads/${review.id}`} className="block bg-white dark:bg-gray-800 p-4 rounded shadow hover:shadow-lg transition">
               <h3 className="text-xl font-semibold mb-2 truncate">{review.title}</h3>
               <p className="text-gray-700 dark:text-gray-300 mb-2 line-clamp-3">{review.content}</p>
