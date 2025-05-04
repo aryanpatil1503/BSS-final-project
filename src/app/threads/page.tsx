@@ -5,13 +5,13 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
-export default async function ThreadsPage({ searchParams }: { searchParams: { search?: string | string[] } }) {
+export default async function ThreadsPage({ searchParams }: { searchParams: Promise<{ search?: string | string[] }> }) {
   // Protect page: redirect if not authenticated
   const session = await getServerSession(authOptions);
   if (!session) redirect('/signin');
 
   // Fetch threads (with optional search) and users for the form
-  const rawQuery = searchParams.search;
+  const { search: rawQuery } = await searchParams;
   const searchQuery = Array.isArray(rawQuery) ? rawQuery[0] : rawQuery;
   const where = searchQuery
     ? {

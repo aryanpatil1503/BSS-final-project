@@ -1,16 +1,12 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
-import { useTheme } from 'next-themes'
 
 export default function Header() {
   const { data: session, status } = useSession()
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  useEffect(() => setMounted(true), []);
 
   return (
     <header className="bg-white dark:bg-gray-800 dark:text-gray-100 transition-colors px-4 sm:px-6 lg:px-12 py-4 flex items-center justify-between relative">
@@ -28,7 +24,7 @@ export default function Header() {
         <Link href="/top" className="text-lg text-gray-900 dark:text-gray-100 hover:underline">Top Books</Link>
         <Link href="/about" className="text-lg text-gray-900 dark:text-gray-100 hover:underline">About</Link>
       </nav>
-      {/* Auth + Theme + Mobile Menu */}
+      {/* Auth + Mobile Menu */}
       <div className="flex items-center space-x-4">
         {status === 'loading' ? (
           <div />
@@ -41,11 +37,6 @@ export default function Header() {
             <Link href="/signin" className="text-blue-600 dark:text-blue-400 hover:underline">Sign In</Link>
             <Link href="/signup" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Sign Up</Link>
           </>
-        )}
-        {mounted && (
-          <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} className="p-1 bg-gray-200 dark:bg-gray-700 rounded transition-colors">
-            {theme === 'light' ? '🌙' : '☀️'}
-          </button>
         )}
         <button onClick={() => setMenuOpen(prev => !prev)} className="md:hidden p-2 text-gray-900 dark:text-gray-100" aria-label="Toggle menu">
           {menuOpen ? '✕' : '☰'}
@@ -65,11 +56,7 @@ export default function Header() {
               <Link href="/signup" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Sign Up</Link>
             </>
           )}
-          {mounted && (
-            <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} className="mt-2 p-1 bg-gray-200 dark:bg-gray-700 rounded transition-colors">
-              {theme === 'light' ? '🌙' : '☀️'}
-            </button>
-          )}
+          {/* Theme toggle removed */}
         </div>
       )}
     </header>
