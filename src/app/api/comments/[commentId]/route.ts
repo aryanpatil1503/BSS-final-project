@@ -3,10 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 
-interface Params { params: { commentId: string } }
-
 // PATCH /api/comments/[commentId]
-export async function PATCH(request: Request, { params }: Params) {
+export async function PATCH(request: Request, { params }: { params: { commentId: string } }) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -33,7 +31,7 @@ export async function PATCH(request: Request, { params }: Params) {
 }
 
 // DELETE /api/comments/[commentId]
-export async function DELETE(request: Request, { params }: Params) {
+export async function DELETE(request: Request, { params }: { params: { commentId: string } }) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

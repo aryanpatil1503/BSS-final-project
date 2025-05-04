@@ -1,12 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../../auth/[...nextauth]/route';
-
-interface Params { params: { threadId: string } }
+import { authOptions } from '@/lib/auth';
 
 // PATCH /api/threads/[threadId]
-export async function PATCH(request: Request, { params }: Params) {
+export async function PATCH(request: NextRequest, { params }: { params: { threadId: string } }) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -33,7 +31,7 @@ export async function PATCH(request: Request, { params }: Params) {
 }
 
 // DELETE /api/threads/[threadId]
-export async function DELETE(request: Request, { params }: Params) {
+export async function DELETE(request: NextRequest, { params }: { params: { threadId: string } }) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
