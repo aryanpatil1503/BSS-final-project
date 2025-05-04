@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-interface Params { params: { threadId: string } }
+interface Params { params: Promise<{ threadId: string }> }
 
 // GET /api/threads/[threadId]/sentiment
 export async function GET(request: Request, { params }: Params) {
-  const { threadId } = params;
+  const { threadId } = await params;
 
   // Fetch thread
   const thread = await prisma.thread.findUnique({ where: { id: threadId } });
