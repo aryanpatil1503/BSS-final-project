@@ -4,12 +4,12 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 
 // PATCH /api/threads/[threadId]
-export async function PATCH(request: NextRequest, { params }: { params: { threadId: string } }) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ threadId: string }> }) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const { threadId } = params;
+  const { threadId } = await params;
   try {
     const { title, content } = await request.json();
     if (!title || !content) {
@@ -31,12 +31,12 @@ export async function PATCH(request: NextRequest, { params }: { params: { thread
 }
 
 // DELETE /api/threads/[threadId]
-export async function DELETE(request: NextRequest, { params }: { params: { threadId: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ threadId: string }> }) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const { threadId } = params;
+  const { threadId } = await params;
   try {
     const existing = await prisma.thread.findUnique({ where: { id: threadId } });
     if (!existing) {
