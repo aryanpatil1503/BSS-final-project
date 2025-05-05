@@ -3,9 +3,11 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
+import { useTheme } from 'next-themes';
 
 export default function Header() {
   const { data: session, status } = useSession()
+  const { resolvedTheme, setTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -23,6 +25,10 @@ export default function Header() {
         <Link href="/threads" className="text-lg text-gray-900 dark:text-gray-100 hover:underline">Reviews</Link>
         <Link href="/top" className="text-lg text-gray-900 dark:text-gray-100 hover:underline">Top Books</Link>
         <Link href="/about" className="text-lg text-gray-900 dark:text-gray-100 hover:underline">About</Link>
+        {/* Theme toggle */}
+        <button onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')} className="p-2 text-gray-900 dark:text-gray-100" aria-label="Toggle Theme">
+          {resolvedTheme === 'dark' ? '☀️' : '🌙'}
+        </button>
       </nav>
       {/* Auth + Mobile Menu */}
       <div className="flex items-center space-x-4">
@@ -56,7 +62,10 @@ export default function Header() {
               <Link href="/signup" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Sign Up</Link>
             </>
           )}
-          {/* Theme toggle removed */}
+          {/* Theme toggle for mobile */}
+          <button onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')} className="p-2 text-gray-900 dark:text-gray-100 w-full text-left" aria-label="Toggle Theme">
+            {resolvedTheme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+          </button>
         </div>
       )}
     </header>

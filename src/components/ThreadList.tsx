@@ -26,11 +26,14 @@ export default function ThreadList({ threads, users }: Props) {
   return (
     <ul className="space-y-4">
       {threads.map((thread) => (
-        <li key={thread.id} className="border p-4 rounded hover:bg-gray-50">
+        <li
+          key={thread.id}
+          className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded hover:bg-gray-50 dark:hover:bg-gray-700"
+        >
           <Link href={`/threads/${thread.id}`} className="text-lg font-semibold text-blue-600">
             {thread.title}
           </Link>
-          <div className="text-sm text-gray-600 mt-1">
+          <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
             by {thread.author.name} • {thread._count.comments} comments • {thread._count.votes} votes
           </div>
           <VoteSection threadId={thread.id} users={users} />

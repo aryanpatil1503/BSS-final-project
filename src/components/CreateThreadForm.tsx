@@ -37,20 +37,20 @@ export default function CreateThreadForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow-sm">
+    <form onSubmit={handleSubmit} className="space-y-4 bg-white dark:bg-gray-800 dark:text-gray-100 p-6 rounded shadow-sm">
       <div>
-        <label className="block text-sm font-medium">Title</label>
+        <label className="block text-sm font-medium text-gray-900 dark:text-gray-300">Title</label>
         <input
-          className="mt-1 block w-full border rounded px-3 py-2"
+          className="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded px-3 py-2"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
         />
       </div>
       <div>
-        <label className="block text-sm font-medium">Content</label>
+        <label className="block text-sm font-medium text-gray-900 dark:text-gray-300">Content</label>
         <textarea
-          className="mt-1 block w-full border rounded px-3 py-2"
+          className="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded px-3 py-2"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           rows={4}
