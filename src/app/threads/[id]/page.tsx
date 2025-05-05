@@ -50,9 +50,11 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
           by {thread.author.name} • {thread._count.comments} comments • {thread._count.votes} votes
         </p>
         <div className="mt-4 text-gray-900 dark:text-gray-100">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {thread.content}
-          </ReactMarkdown>
+          <div className="prose dark:prose-invert">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {thread.content}
+            </ReactMarkdown>
+          </div>
           <ThreadActions threadId={id} title={thread.title} content={thread.content} authorId={thread.author.id} users={users} />
           <p className="mt-2 text-sm font-medium dark:text-gray-300">Sentiment: {sentiment}</p>
         </div>

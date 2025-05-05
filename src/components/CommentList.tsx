@@ -30,7 +30,7 @@ export default function CommentList({ comments, users, threadId }: Props) {
     <ul className="space-y-6">
       {comments.map((comment) => (
         <li key={comment.id} className="border p-4 rounded animate__animated animate__fadeInUp animate__faster transition-colors hover:bg-gray-100 dark:hover:bg-gray-700">
-          <div className="mt-2">
+          <div className="mt-2 prose dark:prose-invert">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {comment.content}
             </ReactMarkdown>
@@ -55,7 +55,7 @@ export default function CommentList({ comments, users, threadId }: Props) {
             <ul className="mt-4 space-y-4 pl-4 border-l">
               {comment.replies.map((reply) => (
                 <li key={reply.id} className="border p-3 rounded animate__animated animate__fadeInUp animate__faster transition-colors hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <div className="mt-2">
+                  <div className="mt-2 prose dark:prose-invert">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
                       {reply.content}
                     </ReactMarkdown>
