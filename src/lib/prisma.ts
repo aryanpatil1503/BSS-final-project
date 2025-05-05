@@ -2,10 +2,15 @@
 import { PrismaClient } from "@/generated/prisma";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { neonConfig } from "@neondatabase/serverless";
-import ws from "ws";
+import WebSocket from "ws";
 
 // Configure Neon serverless driver
-neonConfig.webSocketConstructor = ws;
+// Use HTTP fetch on Vercel/serverless, else WebSocket for dev
+if (process.env.VERCEL) {
+  neonConfig.poolQueryViaFetch = true;
+} else {
+  neonConfig.webSocketConstructor = WebSocket;
+}
 
 declare global {
   // allow global prisma variable in development
