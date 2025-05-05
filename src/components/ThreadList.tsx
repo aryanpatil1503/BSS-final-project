@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import VoteSection from '@/components/VoteSection';
+import { useSession, signIn } from 'next-auth/react';
 
 export interface Thread {
   id: string;
@@ -20,6 +21,20 @@ interface Props {
 }
 
 export default function ThreadList({ threads, users }: Props) {
+  const { data: session } = useSession();
+  if (!session) {
+    return (
+      <div className="text-center py-8">
+        <p className="mb-4 text-gray-500 dark:text-gray-400">Please sign in to view reviews.</p>
+        <button
+          className="px-4 py-2 bg-blue-600 text-white rounded"
+          onClick={() => signIn(undefined, { callbackUrl: '/threads' })}
+        >
+          Sign In
+        </button>
+      </div>
+    );
+  }
   if (threads.length === 0) {
     return <p className="text-center text-gray-500">No threads yet.</p>;
   }
