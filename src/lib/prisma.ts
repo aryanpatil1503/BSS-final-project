@@ -6,7 +6,6 @@ import ws from "ws";
 
 // Configure Neon serverless driver
 neonConfig.webSocketConstructor = ws;
-neonConfig.poolQueryViaFetch = true; // use fetch API for serverless environments
 
 declare global {
   // allow global prisma variable in development
@@ -14,7 +13,9 @@ declare global {
   var prisma: PrismaClient | undefined;
 }
 
-const connectionString = process.env.DATABASE_URL!;
+// Use the unpooled connection string for WebSocket adapter, fallback to pooled
+const connectionString = process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL!;
+
 const adapter = new PrismaNeon({ connectionString });
 
 // Temporarily cast options to any to satisfy TypeScript for driverAdapters preview
